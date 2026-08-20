@@ -1,0 +1,4024 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jumbo Transport — Road Freight Portal</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #132C46;
+      --navy-deep: #0A1B2E;
+      --steel: #3B6E91;
+      --gold: #B08D4F;
+      --bg: #F6F7F9;
+      --panel: #FFFFFF;
+      --border: #E5E8EC;
+      --text: #171A21;
+      --text-mute: #68717F;
+      --text-faint: #9AA2AF;
+
+      --amber: #B9832A;
+      --amber-bg: #FAF0DE;
+      --blue: #2E6FA3;
+      --blue-bg: #E8F1F8;
+      --green: #28825A;
+      --green-bg: #E3F3EA;
+      --red: #BE423D;
+      --red-bg: #FAEAE9;
+      --grey: #828A97;
+      --grey-bg: #EEF0F3;
+
+      --shadow-sm: 0 1px 2px rgba(19, 44, 70, 0.04), 0 1px 1px rgba(19, 44, 70, 0.03);
+      --shadow-md: 0 4px 16px rgba(19, 44, 70, 0.06), 0 1px 3px rgba(19, 44, 70, 0.04);
+      --shadow-lg: 0 12px 32px rgba(10, 27, 46, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* ---------- LOGIN ---------- */
+    #login-screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 860px) {
+      #login-screen {
+        grid-template-columns: 1fr;
+      }
+
+      .login-visual {
+        display: none;
+      }
+    }
+
+    .login-visual {
+      background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 55%, var(--steel) 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+      color: #fff;
+    }
+
+    .login-visual .brand {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .login-visual .brand span {
+      color: #8FC3E8;
+    }
+
+    .login-visual .brand .sidebar-logo-chip {
+      max-width: 100%;
+    }
+
+    .truck-road {
+      position: absolute;
+      inset: 0;
+      opacity: 0.9;
+    }
+
+    .road-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 120px;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0 14px, transparent 14px 28px);
+    }
+
+    .truck-icon {
+      position: absolute;
+      bottom: 96px;
+      width: 38px;
+      height: 38px;
+      color: #fff;
+      animation: drive 9s linear infinite;
+    }
+
+    .truck-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+    }
+
+    @keyframes drive {
+      0% {
+        left: -10%;
+      }
+
+      100% {
+        left: 105%;
+      }
+    }
+
+    .stop-marker {
+      position: absolute;
+      bottom: 112px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #8FC3E8;
+      box-shadow: 0 0 0 5px rgba(143, 195, 232, 0.15);
+    }
+
+    .sm1 {
+      left: 15%;
+    }
+
+    .sm2 {
+      left: 50%;
+    }
+
+    .sm3 {
+      left: 82%;
+    }
+
+    .login-visual .quote {
+      position: relative;
+      z-index: 2;
+      font-size: 27px;
+      line-height: 1.35;
+      font-weight: 600;
+      max-width: 420px;
+    }
+
+    .login-visual .quote small {
+      display: block;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #B9CEDF;
+    }
+
+    .login-visual .stats {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 36px;
+    }
+
+    .login-visual .stats div b {
+      display: block;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .login-visual .stats div span {
+      font-size: 12px;
+      color: #B9CEDF;
+    }
+
+    .login-form-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .login-form {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .login-form .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .logo-text {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .logo-text small {
+      display: block;
+      font-weight: 500;
+      font-size: 11px;
+      color: var(--text-mute);
+      letter-spacing: 0.4px;
+    }
+
+    .login-form h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .login-form p.sub {
+      font-size: 14px;
+      color: var(--text-mute);
+      margin-bottom: 28px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mute);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--steel);
+      box-shadow: 0 0 0 3px rgba(59, 110, 145, 0.15);
+    }
+
+    .row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text-mute);
+    }
+
+    .link {
+      font-size: 13px;
+      color: var(--steel);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-deep);
+    }
+
+    .signup-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-mute);
+      margin-top: 24px;
+    }
+
+    /* ---------- APP SHELL ---------- */
+    #app-screen {
+      display: none;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #app-screen.active {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 224px;
+      background: var(--navy-deep);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 20px 14px;
+      position: relative;
+      transition: width .2s ease, padding .2s ease;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed {
+      width: 72px;
+      padding: 20px 10px;
+    }
+
+    .sidebar-toggle {
+      position: absolute;
+      top: 22px;
+      right: -13px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      color: var(--navy);
+      z-index: 6;
+      padding: 0;
+      transition: transform .2s ease;
+    }
+
+    .sidebar-toggle svg {
+      width: 13px;
+      height: 13px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .2s ease;
+    }
+
+    .sidebar.collapsed .sidebar-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    .sidebar .logo-row {
+      padding: 2px 8px 20px;
+      display: flex;
+      align-items: center;
+      min-height: 38px;
+    }
+
+    .sidebar-logo-chip {
+      background: #fff;
+      border-radius: 9px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .sidebar-logo-chip img {
+      height: 60px;
+      width: 150px;
+      display: block;
+    }
+
+    .sidebar-logo-icon-only {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo-icon-only img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .sidebar.collapsed .sidebar-logo-chip {
+      display: none;
+    }
+
+    .sidebar.collapsed .sidebar-logo-icon-only {
+      display: flex;
+    }
+
+    .sidebar.collapsed .logo-row {
+      justify-content: center;
+      padding: 2px 0 20px;
+    }
+
+    .sidebar-search {
+      position: relative;
+      margin: 2px 2px 16px;
+      transition: opacity .15s ease;
+    }
+
+    .sidebar-search .s-ic {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: #7C8CA1;
+      pointer-events: none;
+    }
+
+    .sidebar-search .s-ic svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      padding: 9px 12px 9px 32px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-size: 12.5px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .sidebar-search input::placeholder {
+      color: #7C8CA1;
+    }
+
+    .sidebar-search input:focus {
+      outline: none;
+      border-color: var(--steel);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar.collapsed .sidebar-search {
+      display: none;
+    }
+
+    .nav-group {
+      margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #B9C4D4;
+      cursor: pointer;
+      margin-bottom: 3px;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: var(--steel);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(59, 110, 145, 0.35);
+    }
+
+    .nav-item .ic {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-label-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar.collapsed .nav-item {
+      justify-content: center;
+      padding: 11px;
+      gap: 0;
+    }
+
+    .sidebar.collapsed .nav-label-text {
+      display: none;
+    }
+
+    .icon-svg,
+    svg.icon-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .nav-item .ic svg,
+    .kpi-icon svg,
+    .icon-btn svg,
+    .search-icon svg,
+    .btn-new svg,
+    .modal-close svg,
+    .doc-ic svg,
+    .doc-type-ic svg,
+    .truck-svg,
+    .login-visual svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sidebar-foot {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .user-chip:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--steel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .user-chip .uname {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .user-chip .urole {
+      font-size: 11px;
+      color: #8FA5BC;
+      white-space: nowrap;
+    }
+
+    .sidebar.collapsed .user-chip {
+      justify-content: center;
+      padding: 8px 0;
+    }
+
+    .sidebar.collapsed .user-chip-text {
+      display: none;
+    }
+
+    .logout-pill {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: background .15s ease;
+    }
+
+    .logout-pill:hover {
+      background: rgba(190, 66, 61, 0.35);
+    }
+
+    .logout-pill .ic {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logout-pill .ic svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sidebar.collapsed .logout-pill {
+      padding: 11px;
+    }
+
+    .sidebar.collapsed .logout-text {
+      display: none;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 440px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 13px 9px 34px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-family: inherit;
+      background: var(--bg);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--steel);
+      background: #fff;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      color: var(--text-faint);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+    }
+
+    .lang-btn {
+      width: 28px;
+      height: 20px;
+      border-radius: 5px;
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+      opacity: 0.45;
+      transition: opacity .15s, box-shadow .15s;
+      display: flex;
+    }
+
+    .lang-btn svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .lang-btn:hover {
+      opacity: 0.75;
+    }
+
+    .lang-btn.active {
+      opacity: 1;
+      box-shadow: 0 0 0 2px var(--steel);
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      color: var(--text-mute);
+    }
+
+    .icon-btn svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .badge-dot {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 2px solid #fff;
+    }
+
+    .btn-new {
+      padding: 9px 16px;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: var(--shadow-sm);
+      transition: background .15s, box-shadow .15s;
+      letter-spacing: 0.1px;
+    }
+
+    .btn-new svg {
+      stroke: #fff;
+    }
+
+    .btn-new:hover {
+      background: var(--navy-deep);
+      box-shadow: var(--shadow-md);
+    }
+
+    .content {
+      flex: 1;
+      padding: 26px 28px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-head h1 {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .page-head p {
+      font-size: 13px;
+      color: var(--text-mute);
+      margin-top: 3px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--text-faint);
+      margin-bottom: 4px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .15s;
+    }
+
+    .kpi-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-mute);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .kpi-delta {
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .kpi-delta.up {
+      color: var(--green);
+    }
+
+    .kpi-delta.down {
+      color: var(--red);
+    }
+
+    .kpi-delta.flat {
+      color: var(--text-faint);
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-head h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mute);
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--blue-bg);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-faint);
+      font-weight: 700;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 13px 20px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #FAFBFD;
+      cursor: pointer;
+    }
+
+    .ref {
+      font-weight: 700;
+      color: var(--navy);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+    }
+
+    .route-cell {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .route-cell .arrow {
+      color: var(--text-faint);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .status-badge .sdot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .st-transit {
+      background: var(--blue-bg);
+      color: var(--blue);
+    }
+
+    .st-transit .sdot {
+      background: var(--blue);
+    }
+
+    .st-booked {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .st-booked .sdot {
+      background: var(--amber);
+    }
+
+    .st-delivered {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .st-delivered .sdot {
+      background: var(--green);
+    }
+
+    .st-delayed {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .st-delayed .sdot {
+      background: var(--red);
+    }
+
+    .st-draft {
+      background: var(--grey-bg);
+      color: var(--grey);
+    }
+
+    .st-draft .sdot {
+      background: var(--grey);
+    }
+
+    .mini-track {
+      display: flex;
+      align-items: center;
+      width: 100px;
+    }
+
+    .mini-track .seg {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+    }
+
+    .mini-track .seg.done {
+      background: var(--green);
+    }
+
+    .mini-track .pt {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .mini-track .pt.done {
+      background: var(--green);
+    }
+
+    .mini-track .pt.now {
+      background: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-bg);
+    }
+
+    .text-mute {
+      color: var(--text-mute);
+    }
+
+    .weight {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+    }
+
+    .panel-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      font-size: 12.5px;
+      color: var(--text-mute);
+    }
+
+    .page-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .page-btns button {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .page-btns button.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 2.1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .side-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .upc-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .upc-item:last-child {
+      border-bottom: none;
+    }
+
+    .upc-date {
+      width: 52px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .upc-date .d {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .upc-date .m {
+      font-size: 10px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .upc-item b {
+      font-size: 13.5px;
+      display: block;
+    }
+
+    .upc-item span {
+      font-size: 12px;
+      color: var(--text-mute);
+    }
+
+    .exception-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exception-item:last-child {
+      border-bottom: none;
+    }
+
+    .exception-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .exception-item b {
+      font-size: 13px;
+      display: block;
+    }
+
+    .exception-item span {
+      font-size: 12px;
+      color: var(--text-mute);
+    }
+
+    /* ---- New booking form ---- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 22px;
+    }
+
+    .form-grid .full {
+      grid-column: 1/-1;
+    }
+
+    .form-section-title {
+      grid-column: 1/-1;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-mute);
+      margin-top: 6px;
+      margin-bottom: -4px;
+    }
+
+    .service-cards {
+      display: flex;
+      gap: 10px;
+      grid-column: 1/-1;
+    }
+
+    .service-card {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+    }
+
+    .service-card.selected {
+      border-color: var(--steel);
+      background: var(--blue-bg);
+    }
+
+    .service-card b {
+      font-size: 13.5px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .service-card span {
+      font-size: 12px;
+      color: var(--text-mute);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-secondary {
+      padding: 10px 18px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary-sm {
+      padding: 10px 20px;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ---- Modal (booking detail) ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 25, 38, 0.5);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      background: #fff;
+      overflow-y: auto;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-head {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .modal-head .ref-big {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--navy);
+    }
+
+    .modal-head h2 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-mute);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .modal-close:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mtab {
+      padding: 12px 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mute);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-right: 18px;
+    }
+
+    .mtab.active {
+      color: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .mtab-content {
+      display: none;
+      padding: 20px 24px;
+    }
+
+    .mtab-content.active {
+      display: block;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 26px;
+    }
+
+    .tl-step {
+      position: relative;
+      padding-bottom: 22px;
+    }
+
+    .tl-step:last-child {
+      padding-bottom: 0;
+    }
+
+    .tl-step::before {
+      content: "";
+      position: absolute;
+      left: -26px;
+      top: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .tl-step.done::before {
+      background: var(--green);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+
+    .tl-step.now::before {
+      background: var(--blue);
+      box-shadow: 0 0 0 4px var(--blue-bg);
+    }
+
+    .tl-step::after {
+      content: "";
+      position: absolute;
+      left: -21px;
+      top: 14px;
+      width: 2px;
+      height: calc(100% - 4px);
+      background: var(--border);
+    }
+
+    .tl-step:last-child::after {
+      display: none;
+    }
+
+    .tl-step b {
+      font-size: 13.5px;
+      display: block;
+    }
+
+    .tl-step span {
+      font-size: 12px;
+      color: var(--text-mute);
+    }
+
+    .doc-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-row:last-child {
+      border-bottom: none;
+    }
+
+    .doc-ic {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 9px;
+    }
+
+    .doc-row b {
+      font-size: 13px;
+      display: block;
+    }
+
+    .doc-row span {
+      font-size: 11.5px;
+      color: var(--text-mute);
+    }
+
+    .doc-dl {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--steel);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .info-item span {
+      font-size: 11px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .info-item b {
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    /* ---- Route map (tracking) ---- */
+    .route-map-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px 18px;
+      margin-bottom: 20px;
+    }
+
+    .route-map-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .live-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      background: var(--green-bg);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .live-pill .pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse2 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse2 {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(46, 139, 87, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 0 5px rgba(46, 139, 87, 0);
+      }
+    }
+
+    .route-track {
+      position: relative;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 6px;
+    }
+
+    .route-track .fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--green);
+      border-radius: 2px;
+      width: 46%;
+    }
+
+    .route-track .truck-pos {
+      position: absolute;
+      top: 50%;
+      left: 46%;
+      transform: translate(-50%, -50%);
+      width: 26px;
+      height: 26px;
+      background: #fff;
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(22, 50, 79, 0.25);
+    }
+
+    .route-stops {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .route-stop {
+      text-align: center;
+      font-size: 11px;
+      max-width: 90px;
+    }
+
+    .route-stop b {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .route-stop span {
+      color: var(--text-mute);
+    }
+
+    .route-meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .route-meta div span {
+      display: block;
+      font-size: 11px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .route-meta div b {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* ---- Documents page ---- */
+    .doc-type-ic {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 9px;
+    }
+
+    .dt-cmr {
+      background: var(--blue-bg);
+    }
+
+    .dt-invoice {
+      background: var(--green-bg);
+    }
+
+    .dt-pod {
+      background: var(--amber-bg);
+    }
+
+    .dt-packing {
+      background: var(--grey-bg);
+    }
+
+    .doc-table-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .doc-table-name b {
+      font-size: 13.5px;
+      display: block;
+    }
+
+    .doc-table-name span {
+      font-size: 11.5px;
+      color: var(--text-mute);
+    }
+
+    .dl-btn {
+      padding: 7px 13px;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dl-btn:hover {
+      background: var(--navy-deep);
+    }
+
+    .dl-btn.pending {
+      background: var(--grey-bg);
+      color: var(--text-faint);
+      cursor: not-allowed;
+    }
+
+    .dl-btn-primary {
+      background: var(--navy);
+    }
+
+    .dl-btn-primary:hover {
+      background: var(--navy-deep);
+    }
+
+    /* ---- Quote detail popup (centered, distinct from booking side-shutter) ---- */
+    .center-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 25, 38, 0.5);
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .center-modal-overlay.active {
+      display: flex;
+    }
+
+    .center-modal-box {
+      background: #fff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .center-modal-head {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .center-modal-head .ref-big {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--navy);
+    }
+
+    .center-modal-head h2 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .center-modal-body {
+      padding: 20px 24px 24px;
+    }
+
+    .center-modal-body .info-grid {
+      margin-bottom: 4px;
+    }
+
+    .qm-status-row {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .qm-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .status-signed {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ---- New Booking form v2 ---- */
+    .two-col-even {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+      align-items: start;
+    }
+
+    @media (max-width:960px) {
+      .two-col-even {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .booking-topline {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .section-ic {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      margin-right: 8px;
+      vertical-align: -3px;
+      color: var(--steel);
+    }
+
+    .section-ic svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .optional {
+      font-weight: 500;
+      color: var(--text-faint);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-mute);
+      cursor: pointer;
+    }
+
+    .toggle-row input {
+      accent-color: var(--navy);
+      width: 14px;
+      height: 14px;
+    }
+
+    .field.locked input {
+      background: var(--grey-bg);
+      color: var(--text-mute);
+      border-color: var(--border);
+      cursor: not-allowed;
+    }
+
+    .field.locked label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pkg-table {
+      width: 100%;
+      border-collapse: collapse;
+      padding: 0 20px;
+    }
+
+    .pkg-table thead th {
+      text-align: left;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-faint);
+      font-weight: 700;
+      padding: 0 20px 8px;
+    }
+
+    .pkg-table tbody td {
+      padding: 5px 20px 5px 20px;
+    }
+
+    .pkg-table tbody tr:first-child td {
+      padding-top: 0;
+    }
+
+    .cell-input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    .cell-input:focus {
+      outline: none;
+      border-color: var(--steel);
+      box-shadow: 0 0 0 3px rgba(59, 110, 145, 0.15);
+    }
+
+    .row-remove {
+      background: none;
+      border: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      font-size: 13px;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+
+    .row-remove:hover {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .add-row-btn {
+      margin: 8px 20px 4px;
+      padding: 8px 14px;
+      background: none;
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--steel);
+      cursor: pointer;
+    }
+
+    .add-row-btn:hover {
+      background: var(--blue-bg);
+      border-color: var(--blue);
+    }
+
+    .estimate-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 22px;
+    }
+
+    .est-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-mute);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .est-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .est-vat {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-faint);
+      margin-left: 6px;
+    }
+
+    .est-note {
+      font-size: 11.5px;
+      color: var(--text-faint);
+      display: block;
+      margin-top: 3px;
+    }
+
+    .status-pending {
+      color: var(--text-faint);
+      font-weight: 600;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="login-screen">
+    <div class="login-visual">
+      <div class="truck-road">
+        <div class="road-line"></div>
+        <div class="stop-marker sm1"></div>
+        <div class="stop-marker sm2"></div>
+        <div class="stop-marker sm3"></div>
+        <div class="truck-icon"><svg viewBox="0 0 24 24">
+            <path d="M1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11H2a1 1 0 0 1-1-1V5Z" />
+            <path d="M14 9h4l3 3v4h-7V9Z" />
+            <circle cx="6" cy="18" r="2" />
+            <circle cx="17.5" cy="18" r="2" />
+          </svg></div>
+      </div>
+      <div class="quote">
+        "<span data-i18n="login_quote">Book a truck, track it door to door, keep every document in one place.</span>"
+        <small><span data-i18n="login_quote_small">Road freight across 40+ European countries since 1982</span></small>
+      </div>
+      <div class="stats">
+        <div><b>100+</b><span><span data-i18n="stat_lanes">Export lanes</span></span></div>
+        <div><b>3</b><span><span data-i18n="stat_terminals">DK terminals</span></span></div>
+        <div><b>24/7</b><span><span data-i18n="stat_tracking">Live tracking</span></span></div>
+      </div>
+    </div>
+
+    <div class="login-form-wrap">
+      <div class="login-form">
+        <div class="logo-row" style="align-items:flex-start; flex-direction:column; gap:10px;">
+          <img src="assets/logo.jpg" alt="Jumbo Transport" style="height:150px; width:380px;">
+          <small style="font-size:11px; font-weight:600; color:var(--text-mute); letter-spacing:0.5px;"><span
+              data-i18n="portal_subtitle">ROAD FREIGHT PORTAL</span></small>
+        </div>
+        <h1><span data-i18n="welcome_back">Welcome back</span></h1>
+        <p class="sub"><span data-i18n="login_sub">Sign in to book truck transport and track your shipments.</span></p>
+        <div class="field"><label><span data-i18n="lbl_email">Email or customer ID</span></label><input type="text"
+            value="ops@nordictrading.dk"></div>
+        <div class="field"><label data-i18n="lbl_password">Password</label><input type="password" value="••••••••••">
+        </div>
+        <div class="row-between">
+          <label class="checkbox-row"><input type="checkbox" checked> <span data-i18n="remember_me">Remember
+              me</span></label>
+          <a href="#" class="link"><span data-i18n="forgot_pw">Forgot password?</span></a>
+        </div>
+        <button class="btn-primary" onclick="doLogin()"><span data-i18n="sign_in_btn">Sign in</span></button>
+        <p class="signup-note"><span data-i18n="need_access">Need portal access?</span> <a href="#" class="link"><span
+              data-i18n="contact_am">Contact your account manager</span></a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APP SCREEN ================= -->
+  <div id="app-screen">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-toggle" onclick="toggleSidebar()" title="Collapse sidebar">
+        <svg viewBox="0 0 24 24">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      </button>
+
+
+      <div class="nav-group">
+        <div class="nav-item active" data-view="dashboard" title="Dashboard"><span class="ic"><svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg></span><span class="nav-label-text"> Dashboard</span></div>
+        <div class="nav-item" data-view="bookings" title="My Bookings"><span class="ic"><svg viewBox="0 0 24 24">
+              <rect x="4" y="3" width="16" height="18" rx="2" />
+              <path d="M8 8h8M8 12h8M8 16h5" />
+            </svg></span><span class="nav-label-text"> My Bookings</span></div>
+        <div class="nav-item" data-view="quotes" title="Quotes"><span class="ic"><svg viewBox="0 0 24 24">
+              <path
+                d="M12.6 2.6a2 2 0 0 0-1.4-.6H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4Z" />
+              <circle cx="7.5" cy="7.5" r="1.5" />
+            </svg></span><span class="nav-label-text"> Quotes</span></div>
+        <div class="nav-item" data-view="documents" title="Documents"><span class="ic"><svg viewBox="0 0 24 24">
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+            </svg></span><span class="nav-label-text"> Documents</span></div>
+        <div class="nav-item" data-view="invoices" title="Invoices"><span class="ic"><svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg></span><span class="nav-label-text"> Invoices</span></div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-right">
+          <div class="lang-switch">
+            <button class="lang-btn" data-lang="da" title="Dansk">
+              <svg viewBox="0 0 28 20">
+                <rect width="28" height="20" fill="#C8102E" />
+                <rect x="9" width="4" height="20" fill="#fff" />
+                <rect y="8" width="28" height="4" fill="#fff" />
+              </svg>
+            </button>
+            <button class="lang-btn active" data-lang="en" title="English">
+              <svg viewBox="0 0 28 20">
+                <rect width="28" height="20" fill="#00247D" />
+                <path d="M0 0 28 20M28 0 0 20" stroke="#fff" stroke-width="3" />
+                <path d="M0 0 28 20M28 0 0 20" stroke="#C8102E" stroke-width="1.4" />
+                <rect x="11" width="6" height="20" fill="#fff" />
+                <rect y="7" width="28" height="6" fill="#fff" />
+                <rect x="12.3" width="3.4" height="20" fill="#C8102E" />
+                <rect y="8.3" width="28" height="3.4" fill="#C8102E" />
+              </svg>
+            </button>
+          </div>
+          <button class="icon-btn"><svg viewBox="0 0 24 24">
+              <path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" />
+              <path d="M10 20a2 2 0 0 0 4 0" />
+            </svg><span class="badge-dot"></span></button>
+          <button class="btn-new" onclick="showView('newbooking')"><svg viewBox="0 0 24 24"
+              style="width:15px;height:15px;">
+              <path d="M12 5v14M5 12h14" />
+            </svg><span data-i18n="new_booking_btn">New Booking</span></button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- ============ DASHBOARD VIEW ============ -->
+        <div class="view active" id="view-dashboard">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nav_dashboard">Dashboard</span></h1>
+              <p>Nordic Trading A/S — 19 August 2026</p>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--blue-bg); color:var(--blue);"><svg viewBox="0 0 24 24">
+                  <path d="M1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11H2a1 1 0 0 1-1-1V5Z" />
+                  <path d="M14 9h4l3 3v4h-7V9Z" />
+                  <circle cx="6" cy="18" r="2" />
+                  <circle cx="17.5" cy="18" r="2" />
+                </svg></div>
+              <div class="kpi-label"><span data-i18n="active_shipments">Active shipments</span></div>
+              <div class="kpi-value num">7</div>
+              <div class="kpi-delta up"><span data-i18n="delta_vs_week">▲ 2 vs last week</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--amber-bg); color:var(--amber);"><svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <path d="M3 10h18M8 3v4M16 3v4" />
+                </svg></div>
+              <div class="kpi-label"><span data-i18n="upcoming_deliveries">Upcoming deliveries</span></div>
+              <div class="kpi-value num">4</div>
+              <div class="kpi-delta flat"><span data-i18n="next_7_days">Next 7 days</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--red-bg); color:var(--red);"><svg viewBox="0 0 24 24">
+                  <path d="M12 3 2 20h20L12 3Z" />
+                  <path d="M12 10v4M12 17h.01" />
+                </svg></div>
+              <div class="kpi-label"><span data-i18n="status_delayed">Delayed</span></div>
+              <div class="kpi-value num">1</div>
+              <div class="kpi-delta down"><span data-i18n="needs_attention">Needs attention</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--green-bg); color:var(--green);"><svg viewBox="0 0 24 24">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg></div>
+              <div class="kpi-label"><span data-i18n="delivered_month">Delivered this month</span></div>
+              <div class="kpi-value num">23</div>
+              <div class="kpi-delta flat"><span data-i18n="ontime_rate">On-time rate 96%</span></div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="panel">
+              <div class="panel-head">
+                <h2><span data-i18n="active_live_status"><span data-i18n="active_shipments">Active shipments</span> —
+                    live status</span></h2>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th><span data-i18n="th_reference">Reference</span></th>
+                    <th><span data-i18n="th_route">Route</span></th>
+                    <th><span data-i18n="th_progress">Progress</span></th>
+                    <th>ETA</th>
+                    <th><span data-i18n="th_status">Status</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr onclick="openBooking()">
+                    <td><span class="ref">JT-48213</span></td>
+                    <td>
+                      <div class="route-cell">Brøndby <span class="arrow">→</span> Hamburg</div>
+                    </td>
+                    <td>
+                      <div class="mini-track">
+                        <div class="pt done"></div>
+                        <div class="seg done"></div>
+                        <div class="pt now"></div>
+                        <div class="seg"></div>
+                        <div class="pt"></div>
+                        <div class="seg"></div>
+                        <div class="pt"></div>
+                      </div>
+                    </td>
+                    <td class="text-mute">Today, 16:30</td>
+                    <td><span class="status-badge st-transit"><span class="sdot"></span><span
+                          data-i18n="status_transit">In transit</span></span></td>
+                  </tr>
+                  <tr onclick="openBooking()">
+                    <td><span class="ref">JT-48197</span></td>
+                    <td>
+                      <div class="route-cell">Aarhus <span class="arrow">→</span> Warsaw</div>
+                    </td>
+                    <td>
+                      <div class="mini-track">
+                        <div class="pt done"></div>
+                        <div class="seg done"></div>
+                        <div class="pt done"></div>
+                        <div class="seg done"></div>
+                        <div class="pt now"></div>
+                        <div class="seg"></div>
+                        <div class="pt"></div>
+                      </div>
+                    </td>
+                    <td class="text-mute"><span data-i18n="status_delayed">Delayed</span></td>
+                    <td><span class="status-badge st-delayed"><span class="sdot"></span><span
+                          data-i18n="status_delayed">Delayed</span></span></td>
+                  </tr>
+                  <tr onclick="openBooking()">
+                    <td><span class="ref">JT-48260</span></td>
+                    <td>
+                      <div class="route-cell">Haderslev <span class="arrow">→</span> Milan</div>
+                    </td>
+                    <td>
+                      <div class="mini-track">
+                        <div class="pt done"></div>
+                        <div class="seg"></div>
+                        <div class="pt now"></div>
+                        <div class="seg"></div>
+                        <div class="pt"></div>
+                        <div class="seg"></div>
+                        <div class="pt"></div>
+                      </div>
+                    </td>
+                    <td class="text-mute">22 Aug</td>
+                    <td><span class="status-badge st-booked"><span class="sdot"></span><span
+                          data-i18n="status_booked">Booked</span></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="panel-foot"><span><span data-i18n="showing_3_7">Showing 3 of 7 active
+                    shipments</span></span><a href="#" class="link" onclick="showView('bookings')"><span
+                    data-i18n="view_all">View all →</span></a></div>
+            </div>
+
+            <div class="side-stack">
+              <div class="panel">
+                <div class="panel-head">
+                  <h2><span data-i18n="upcoming_deliveries">Upcoming deliveries</span></h2>
+                </div>
+                <div>
+                  <div class="upc-item">
+                    <div class="upc-date">
+                      <div class="d">20</div>
+                      <div class="m">Aug</div>
+                    </div>
+                    <div><b>JT-48213 → Hamburg, DE</b><span>Nordic Trading warehouse</span></div>
+                  </div>
+                  <div class="upc-item">
+                    <div class="upc-date">
+                      <div class="d">22</div>
+                      <div class="m">Aug</div>
+                    </div>
+                    <div><b>JT-48260 → Milan, IT</b><span>Full load, 1,540 kg</span></div>
+                  </div>
+                  <div class="upc-item">
+                    <div class="upc-date">
+                      <div class="d">25</div>
+                      <div class="m">Aug</div>
+                    </div>
+                    <div><b>JT-48310 → Vienna, AT</b><span>Groupage, 620 kg</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-head">
+                  <h2><span data-i18n="needs_attention">Needs attention</span></h2>
+                </div>
+                <div>
+                  <div class="exception-item">
+                    <div class="exception-dot"></div>
+                    <div><b>JT-48197 — Customs hold</b><span>Warsaw border · waiting on invoice</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ MY BOOKINGS VIEW ============ -->
+        <div class="view" id="view-bookings">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nav_my_bookings">My Bookings</span></h1>
+              <p><span data-i18n="bookings_sub">Full history of your road transport bookings and documents</span></p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2><span data-i18n="all_bookings">All bookings</span></h2>
+              <div class="filter-chips">
+                <div class="chip active"><span data-i18n="filter_all">All</span></div>
+                <div class="chip"><span data-i18n="status_transit">In transit</span></div>
+                <div class="chip"><span data-i18n="status_delivered">Delivered</span></div>
+                <div class="chip"><span data-i18n="status_delayed">Delayed</span></div>
+                <div class="chip"><span data-i18n="status_draft">Draft</span></div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th><span data-i18n="th_reference">Reference</span></th>
+                  <th><span data-i18n="th_route">Route</span></th>
+                  <th><span data-i18n="th_service">Service</span></th>
+                  <th><span data-i18n="th_weight">Weight</span></th>
+                  <th><span data-i18n="booked_date">Booked date</span></th>
+                  <th><span data-i18n="th_status">Status</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48213</span></td>
+                  <td>
+                    <div class="route-cell">Brøndby <span class="arrow">→</span> Hamburg</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_full_load">Full load</span></td>
+                  <td class="weight num">4,200 kg</td>
+                  <td class="text-mute">14 Aug 2026</td>
+                  <td><span class="status-badge st-transit"><span class="sdot"></span><span
+                        data-i18n="status_transit">In transit</span></span></td>
+                </tr>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48197</span></td>
+                  <td>
+                    <div class="route-cell">Aarhus <span class="arrow">→</span> Warsaw</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_groupage">Groupage</span></td>
+                  <td class="weight num">860 kg</td>
+                  <td class="text-mute">12 Aug 2026</td>
+                  <td><span class="status-badge st-delayed"><span class="sdot"></span><span
+                        data-i18n="status_delayed">Delayed</span></span></td>
+                </tr>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48260</span></td>
+                  <td>
+                    <div class="route-cell">Haderslev <span class="arrow">→</span> Milan</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_part_load">Part load</span></td>
+                  <td class="weight num">1,540 kg</td>
+                  <td class="text-mute">17 Aug 2026</td>
+                  <td><span class="status-badge st-booked"><span class="sdot"></span><span
+                        data-i18n="status_booked">Booked</span></span></td>
+                </tr>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48155</span></td>
+                  <td>
+                    <div class="route-cell">Malmö <span class="arrow">→</span> Oslo</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_full_load">Full load</span></td>
+                  <td class="weight num">6,100 kg</td>
+                  <td class="text-mute">02 Aug 2026</td>
+                  <td><span class="status-badge st-delivered"><span class="sdot"></span><span
+                        data-i18n="status_delivered">Delivered</span></span></td>
+                </tr>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48090</span></td>
+                  <td>
+                    <div class="route-cell">Copenhagen <span class="arrow">→</span> Prague</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_groupage">Groupage</span></td>
+                  <td class="weight num">410 kg</td>
+                  <td class="text-mute">28 Jul 2026</td>
+                  <td><span class="status-badge st-delivered"><span class="sdot"></span><span
+                        data-i18n="status_delivered">Delivered</span></span></td>
+                </tr>
+                <tr onclick="openBooking()">
+                  <td><span class="ref">JT-48271</span></td>
+                  <td>
+                    <div class="route-cell">Copenhagen <span class="arrow">→</span> Rotterdam</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_groupage">Groupage</span></td>
+                  <td class="weight num">310 kg</td>
+                  <td class="text-mute">19 Aug 2026</td>
+                  <td><span class="status-badge st-draft"><span class="sdot"></span><span
+                        data-i18n="status_draft">Draft</span></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="panel-foot"><span><span data-i18n="showing_6_84">Showing 6 of 84 bookings</span></span>
+              <div class="page-btns"><button
+                  class="active">1</button><button>2</button><button>3</button><button>›</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ QUOTES VIEW ============ -->
+        <div class="view" id="view-quotes">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nav_quotes">Quotes</span></h1>
+              <p><span data-i18n="quotes_sub">Price quotes requested for upcoming shipments</span></p>
+            </div>
+            <button class="btn-new" onclick="showView('newquote')"><svg viewBox="0 0 24 24"
+                style="width:15px;height:15px;">
+                <path d="M12 5v14M5 12h14" />
+              </svg><span data-i18n="new_quote_btn">New Quote</span></button>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2><span data-i18n="all_quotes">All quotes</span></h2>
+              <div class="filter-chips">
+                <div class="chip active"><span data-i18n="filter_all">All</span></div>
+                <div class="chip"><span data-i18n="quote_accepted">Accepted</span></div>
+                <div class="chip"><span data-i18n="quote_expired">Expired</span></div>
+                <div class="chip"><span data-i18n="status_draft">Draft</span></div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th><span data-i18n="th_quote_ref">Quote ref</span></th>
+                  <th><span data-i18n="th_route">Route</span></th>
+                  <th><span data-i18n="th_service">Service</span></th>
+                  <th><span data-i18n="th_weight">Weight</span></th>
+                  <th><span data-i18n="th_valid_until">Valid until</span></th>
+                  <th><span data-i18n="th_price">Price</span></th>
+                  <th><span data-i18n="th_status">Status</span></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="ref">Q-1042</span></td>
+                  <td>
+                    <div class="route-cell">Brøndby <span class="arrow">→</span> Munich</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_full_load">Full load</span></td>
+                  <td class="weight num">1,200 kg</td>
+                  <td class="text-mute">30 Aug 2026</td>
+                  <td class="weight num">DKK 2,850</td>
+                  <td><span class="status-badge st-booked"><span class="sdot"></span><span
+                        data-i18n="quote_pending">Pending review</span></span></td>
+                  <td><button class="dl-btn" onclick="openQuoteModal(this)" data-qref="Q-1042"
+                      data-pickup="2605 Brøndby, DK" data-delivery="Munich, DE" data-date="26 Aug 2026"
+                      data-weight="1,200 kg" data-service="Full load" data-goods="Pallets, general cargo"
+                      data-poref="NT-2026-0091" data-price="DKK 2,850" data-valid="30 Aug 2026"
+                      data-status="Pending review" data-statusclass="st-booked">
+                      <span data-i18n="view_btn">View</span></button></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">Q-1038</span></td>
+                  <td>
+                    <div class="route-cell">Aarhus <span class="arrow">→</span> Amsterdam</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_groupage">Groupage</span></td>
+                  <td class="weight num">340 kg</td>
+                  <td class="text-mute">25 Aug 2026</td>
+                  <td class="weight num">DKK 980</td>
+                  <td><span class="status-badge st-delivered"><span class="sdot"></span><span
+                        data-i18n="quote_accepted">Accepted</span></span></td>
+                  <td><button class="dl-btn dl-btn-primary" onclick="showView('newbooking')"><span
+                        data-i18n="book_btn">Book</span></button></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">Q-1041</span></td>
+                  <td>
+                    <div class="route-cell">Copenhagen <span class="arrow">→</span> Zurich</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_full_load">Full load</span></td>
+                  <td class="weight num">3,600 kg</td>
+                  <td class="text-mute">28 Aug 2026</td>
+                  <td class="weight num">DKK 4,120</td>
+                  <td><span class="status-badge st-draft"><span class="sdot"></span><span
+                        data-i18n="status_draft">Draft</span></span></td>
+                  <td><button class="dl-btn" onclick="showView('newquote')"><span
+                        data-i18n="continue_btn">Continue</span></button></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">Q-1029</span></td>
+                  <td>
+                    <div class="route-cell">Haderslev <span class="arrow">→</span> Vienna</div>
+                  </td>
+                  <td class="text-mute"><span data-i18n="svc_part_load">Part load</span></td>
+                  <td class="weight num">2,100 kg</td>
+                  <td class="text-mute">10 Aug 2026</td>
+                  <td class="weight num">DKK 3,400</td>
+                  <td><span class="status-badge st-delayed"><span class="sdot"></span><span
+                        data-i18n="quote_expired">Expired</span></span></td>
+                  <td><button class="dl-btn" onclick="openQuoteModal(this)" data-qref="Q-1029"
+                      data-pickup="6100 Haderslev, DK" data-delivery="Vienna, AT" data-date="05 Aug 2026"
+                      data-weight="2,100 kg" data-service="Part load" data-goods="Machinery parts"
+                      data-poref="NT-2026-0074" data-price="DKK 3,400" data-valid="10 Aug 2026" data-status="Expired"
+                      data-statusclass="st-delayed">
+                      <span data-i18n="view_btn">View</span></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="panel-foot"><span><span data-i18n="showing_4_18">Showing 4 of 18 quotes</span></span>
+              <div class="page-btns"><button class="active">1</button><button>2</button><button>›</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ NEW QUOTE VIEW ============ -->
+        <div class="view" id="view-newquote">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nq_title">Request a price quote</span></h1>
+              <p><span data-i18n="nq_sub">Get an estimated price before you commit to a booking</span></p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="form-grid">
+              <div class="field"><label><span data-i18n="lbl_pickup_postcode">Pickup postcode /
+                    city</span></label><input type="text" placeholder="e.g. 2605 Brøndby"></div>
+              <div class="field"><label><span data-i18n="lbl_delivery_postcode">Delivery postcode /
+                    city</span></label><input type="text" placeholder="e.g. 20095 Hamburg, DE"></div>
+              <div class="field"><label><span data-i18n="lbl_pickup_date">Pickup date</span></label><input type="date"
+                  value="2026-08-26"></div>
+              <div class="field"><label><span data-i18n="th_weight_kg">Weight (kg)</span></label><input type="number"
+                  placeholder="e.g. 1200"></div>
+
+              <div class="form-section-title" style="grid-column:1/-1;"><span data-i18n="lbl_vehicle_type">Vehicle
+                  type</span></div>
+              <div class="service-cards">
+                <div class="service-card selected"><b><span data-i18n="svc_full_load">Full load</span></b><span
+                    data-i18n="svc_full_load_desc">Dedicated truck, direct route</span></div>
+                <div class="service-card"><b><span data-i18n="svc_part_load">Part load</span></b><span
+                    data-i18n="svc_part_load_desc">Shared truck, cost-efficient</span></div>
+                <div class="service-card"><b><span data-i18n="svc_groupage">Groupage</span></b><span
+                    data-i18n="svc_groupage_desc">Consolidated cargo, regular departures</span></div>
+              </div>
+
+              <div class="field full"><label><span data-i18n="lbl_goods_desc">Goods description</span> <span
+                    class="optional" data-i18n="optional_tag">(optional)</span></label><textarea rows="2"
+                  placeholder="Pallets, machinery, general cargo..."></textarea></div>
+              <div class="field full"><label><span data-i18n="lbl_your_ref">Your reference / PO number</span> <span
+                    class="optional" data-i18n="optional_tag">(optional)</span></label><input type="text"
+                  placeholder="e.g. NT-2026-0091"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-secondary" onclick="showView('quotes')"><span
+                  data-i18n="cancel_btn">Cancel</span></button>
+              <button class="btn-primary-sm"><span data-i18n="request_quote_btn">Request quote</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ NEW BOOKING VIEW ============ -->
+        <div class="view" id="view-newbooking">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nb_title">New road transport booking</span></h1>
+              <p><span data-i18n="nb_sub">Your company details are filled in automatically — just add pickup, delivery
+                  and cargo details</span></p>
+            </div>
+          </div>
+
+          <!-- Reference bar -->
+          <div class="panel">
+            <div class="booking-topline">
+              <div class="field"><label><span data-i18n="lbl_your_ref">Your reference / PO number</span></label><input
+                  type="text" placeholder="e.g. NT-2026-0091"></div>
+              <div class="field"><label><span data-i18n="lbl_cust_proj">Customer / project no.</span> <span
+                    class="optional"><span data-i18n="optional_tag">(optional)</span></span></label><input type="text"
+                  placeholder="e.g. PRJ-4021"></div>
+              <div class="field"><label><span data-i18n="lbl_order_date">Requested order date</span></label><input
+                  type="date" value="2026-08-19"></div>
+            </div>
+          </div>
+
+          <!-- Sender / Receiver -->
+          <div class="two-col-even">
+            <div class="panel">
+              <div class="panel-head">
+                <h2><span class="section-ic ic-pickup"><svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="10" r="3" />
+                      <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11Z" />
+                    </svg></span><span data-i18n="pickup_sender">Pickup (Sender)</span></h2>
+                <label class="toggle-row"><input type="checkbox" id="senderAuto" checked onchange="toggleSender()">
+                  <span data-i18n="use_company_addr">Use my company address</span></label>
+              </div>
+              <div class="form-grid" id="senderFields">
+                <div class="field full locked"><label><span data-i18n="lbl_company">Company</span></label><input
+                    type="text" value="Nordic Trading A/S" disabled></div>
+                <div class="field full locked"><label><span data-i18n="lbl_street">Street / No.</span></label><input
+                    type="text" value="Industrivej 14" disabled></div>
+                <div class="field locked"><label><span data-i18n="lbl_postcode_city">Postcode /
+                      City</span></label><input type="text" value="2100 København Ø" disabled></div>
+                <div class="field locked"><label><span data-i18n="lbl_country">Country</span></label><input type="text"
+                    value="Denmark" disabled></div>
+                <div class="field locked"><label><span data-i18n="lbl_phone">Contact phone</span></label><input
+                    type="text" value="+45 33 12 45 67" disabled></div>
+                <div class="field locked"><label><span data-i18n="lbl_email2">Contact email</span></label><input
+                    type="text" value="ops@nordictrading.dk" disabled></div>
+                <div class="field"><label><span data-i18n="lbl_pickup_date">Pickup date</span></label><input type="date"
+                    value="2026-08-22"></div>
+                <div class="field"><label><span data-i18n="lbl_pickup_window">Pickup time window</span></label><input
+                    type="text" placeholder="e.g. 08:00–12:00"></div>
+                <div class="field full"><label><span data-i18n="lbl_pickup_notes">Pickup notes</span> <span
+                      class="optional"><span data-i18n="optional_tag">(optional)</span></span></label><input type="text"
+                    placeholder="Gate code, loading dock, contact person on site"></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <h2><span class="section-ic ic-drop"><svg viewBox="0 0 24 24">
+                      <path d="M12 2v13" />
+                      <path d="m7 10 5 5 5-5" />
+                      <path d="M5 21h14" />
+                    </svg></span><span data-i18n="delivery_receiver">Delivery (Receiver)</span></h2>
+              </div>
+              <div class="form-grid">
+                <div class="field full"><label><span data-i18n="lbl_company_recipient">Company / recipient
+                      name</span></label><input type="text" placeholder="Recipient company name"></div>
+                <div class="field full"><label><span data-i18n="lbl_street">Street / No.</span></label><input
+                    type="text" placeholder="Street and number"></div>
+                <div class="field"><label><span data-i18n="lbl_postcode_city">Postcode / City</span></label><input
+                    type="text" placeholder="e.g. 20095 Hamburg"></div>
+                <div class="field">
+                  <label><span data-i18n="lbl_country">Country</span></label>
+                  <select>
+                    <option>Germany</option>
+                    <option>Denmark</option>
+                    <option>Sweden</option>
+                    <option>Norway</option>
+                    <option>Poland</option>
+                    <option>Netherlands</option>
+                    <option>France</option>
+                    <option>Italy</option>
+                  </select>
+                </div>
+                <div class="field"><label><span data-i18n="lbl_phone">Contact phone</span></label><input type="text"
+                    placeholder="Recipient phone"></div>
+                <div class="field"><label><span data-i18n="lbl_email2">Contact email</span> <span class="optional"><span
+                        data-i18n="optional_tag">(optional)</span></span></label><input type="text"
+                    placeholder="Recipient email"></div>
+                <div class="field"><label><span data-i18n="lbl_delivery_date">Requested delivery
+                      date</span></label><input type="date" value="2026-08-25"></div>
+                <div class="field"><label><span data-i18n="lbl_delivery_window">Delivery time window</span> <span
+                      class="optional"><span data-i18n="optional_tag">(optional)</span></span></label><input type="text"
+                    placeholder="e.g. 09:00–15:00"></div>
+                <div class="field full"><label><span data-i18n="lbl_delivery_notes">Delivery notes</span> <span
+                      class="optional"><span data-i18n="optional_tag">(optional)</span></span></label><input type="text"
+                    placeholder="Access instructions, contact person on site"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service & Vehicle -->
+          <div class="panel">
+            <div class="panel-head">
+              <h2><span class="section-ic ic-truck"><svg viewBox="0 0 24 24">
+                    <path d="M1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11H2a1 1 0 0 1-1-1V5Z" />
+                    <path d="M14 9h4l3 3v4h-7V9Z" />
+                    <circle cx="6" cy="18" r="2" />
+                    <circle cx="17.5" cy="18" r="2" />
+                  </svg></span><span data-i18n="th_service">Service</span></h2>
+            </div>
+            <div class="form-grid">
+              <div class="service-cards">
+                <div class="service-card selected"><b>Full load (FTL)</b><span>Dedicated truck, direct route</span>
+                </div>
+                <div class="service-card"><b><span data-i18n="svc_part_load">Part load</span></b><span>Shared truck,
+                    cost-efficient</span></div>
+                <div class="service-card"><b><span data-i18n="svc_groupage">Groupage</span></b><span>Consolidated cargo,
+                    regular departures</span></div>
+              </div>
+              <div class="field"><label><span data-i18n="lbl_vehicle_type">Vehicle type</span></label>
+                <select>
+                  <option><span data-i18n="opt_standard">Standard</span></option>
+                  <option><span data-i18n="opt_curtain">Curtain-sider</span></option>
+                  <option><span data-i18n="opt_refrigerated">Refrigerated</span></option>
+                  <option><span data-i18n="opt_flatbed">Flatbed</span></option>
+                  <option><span data-i18n="opt_taillift">Tail-lift</span></option>
+                </select>
+              </div>
+              <div class="field"><label><span data-i18n="lbl_goods_type">Goods type</span></label>
+                <select>
+                  <option><span data-i18n="opt_general_cargo">General cargo</span></option>
+                  <option><span data-i18n="opt_pallets_nonstack">Pallets — non-stackable</span></option>
+                  <option><span data-i18n="opt_machinery">Machinery</span></option>
+                  <option><span data-i18n="opt_temp_controlled">Temperature-controlled</span></option>
+                  <option><span data-i18n="opt_hazardous">Hazardous (ADR)</span></option>
+                </select>
+              </div>
+              <div class="field full">
+                <label class="toggle-row"><input type="checkbox"> <span data-i18n="hazard_checkbox">This shipment
+                    contains hazardous goods (ADR)</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cargo / Packages -->
+          <div class="panel">
+            <div class="panel-head">
+              <h2><span class="section-ic ic-box"><svg viewBox="0 0 24 24">
+                    <path d="m21 8-9-5-9 5 9 5 9-5Z" />
+                    <path d="M3 8v8l9 5 9-5V8M12 13v8" />
+                  </svg></span><span data-i18n="pkg_dimensions">Packages &amp; dimensions</span></h2>
+            </div>
+            <table class="pkg-table">
+              <thead>
+                <tr>
+                  <th><span data-i18n="th_quantity">Quantity</span></th>
+                  <th><span data-i18n="th_pkg_type">Package type</span></th>
+                  <th><span data-i18n="th_description">Description</span></th>
+                  <th><span data-i18n="th_weight_kg">Weight (kg)</span></th>
+                  <th><span data-i18n="th_dimensions">Dimensions (L×W×H cm)</span></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="pkgRows">
+                <tr>
+                  <td><input type="number" value="4" class="cell-input"></td>
+                  <td><select class="cell-input">
+                      <option><span data-i18n="opt_euro_pallet">Euro pallet</span></option>
+                      <option><span data-i18n="opt_industrial_pallet">Industrial pallet</span></option>
+                      <option><span data-i18n="opt_box">Box</span></option>
+                      <option><span data-i18n="opt_crate">Crate</span></option>
+                      <option><span data-i18n="opt_roll_cage">Roll cage</span></option>
+                    </select></td>
+                  <td><input type="text" placeholder="e.g. Machine parts" class="cell-input"></td>
+                  <td><input type="number" placeholder="1050" class="cell-input"></td>
+                  <td><input type="text" placeholder="120×80×110" class="cell-input"></td>
+                  <td><button class="row-remove" onclick="this.closest('tr').remove()">✕</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addPkgRow()"><span data-i18n="add_pkg_line">+ Add package
+                line</span></button>
+            <div class="form-grid" style="padding-top:6px;">
+              <div class="field"><label><span data-i18n="lbl_total_weight">Total weight (kg)</span></label><input
+                  type="number" placeholder="e.g. 4200"></div>
+              <div class="field"><label><span data-i18n="lbl_total_pallets">Total pallet spaces</span></label><input
+                  type="number" placeholder="e.g. 4"></div>
+              <div class="field full"><label><span data-i18n="lbl_additional_notes">Additional notes for Jumbo</span>
+                  <span class="optional"><span data-i18n="optional_tag">(optional)</span></span></label><textarea
+                  rows="2" placeholder="Anything the ops team should know about this shipment"></textarea></div>
+            </div>
+          </div>
+
+          <!-- Estimate + submit -->
+          <div class="panel">
+            <div class="estimate-bar">
+              <div>
+                <span class="est-label"><span data-i18n="estimated_price">Estimated price</span></span>
+                <div class="est-value num">DKK 3,240<span class="est-vat"><span data-i18n="excl_vat">excl.
+                      VAT</span></span></div>
+                <span class="est-note"><span data-i18n="final_price_note">Final price confirmed after booking
+                    review</span></span>
+              </div>
+              <div class="form-actions" style="border:none; padding:0;">
+                <button class="btn-secondary"><span data-i18n="save_draft">Save as draft</span></button>
+                <button class="btn-primary-sm"><span data-i18n="submit_booking">Submit booking</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ DOCUMENTS VIEW ============ -->
+        <div class="view" id="view-documents">
+          <div class="page-head">
+            <div>
+
+              <h1><span data-i18n="nav_documents">Documents</span></h1>
+              <p><span data-i18n="docs_sub">Every CMR, invoice and proof of delivery from your bookings, in one
+                  place</span></p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2><span data-i18n="all_documents">All documents</span></h2>
+              <div class="filter-chips">
+                <div class="chip active"><span data-i18n="filter_all">All</span></div>
+                <div class="chip"><span data-i18n="filter_cmr">CMR</span></div>
+                <div class="chip"><span data-i18n="filter_invoice">Invoice</span></div>
+                <div class="chip"><span data-i18n="filter_pod">POD</span></div>
+                <div class="chip"><span data-i18n="packing_list">Packing list</span></div>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th><span data-i18n="th_document">Document</span></th>
+                  <th><span data-i18n="th_booking">Booking</span></th>
+                  <th><span data-i18n="th_route">Route</span></th>
+                  <th><span data-i18n="th_date">Date</span></th>
+                  <th><span data-i18n="th_status">Status</span></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-cmr" style="color:var(--blue);"><svg viewBox="0 0 24 24">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                          <path d="M14 2v6h6M9 13h6M9 17h6" />
+                        </svg></div>
+                      <div><b><span data-i18n="cmr_waybill">CMR waybill</span></b><span>Signed · PDF · 210 KB</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48213</span></td>
+                  <td class="text-mute">Brøndby → Hamburg</td>
+                  <td class="text-mute">19 Aug 2026</td>
+                  <td><span class="status-signed"><svg viewBox="0 0 24 24"
+                        style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg> <span data-i18n="status_signed_word">Signed</span></span></td>
+                  <td><button class="dl-btn"><span data-i18n="download_btn">Download</span></button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-invoice" style="color:var(--green);"><svg viewBox="0 0 24 24">
+                          <rect x="2" y="5" width="20" height="14" rx="2" />
+                          <path d="M2 10h20M6 15h4" />
+                        </svg></div>
+                      <div><b>Invoice #INV-22841</b><span>PDF · 96 KB</span></div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48155</span></td>
+                  <td class="text-mute">Malmö → Oslo</td>
+                  <td class="text-mute">05 Aug 2026</td>
+                  <td><span class="status-signed"><svg viewBox="0 0 24 24"
+                        style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg> <span data-i18n="status_issued_word">Issued</span></span></td>
+                  <td><button class="dl-btn"><span data-i18n="download_btn">Download</span></button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-pod" style="color:var(--amber);"><svg viewBox="0 0 24 24">
+                          <path d="M9 11 12 14 22 4" />
+                          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                        </svg></div>
+                      <div><b><span data-i18n="proof_delivery">Proof of delivery</span></b><span>Signed by recipient ·
+                          PDF · 140 KB</span></div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48155</span></td>
+                  <td class="text-mute">Malmö → Oslo</td>
+                  <td class="text-mute">04 Aug 2026</td>
+                  <td><span class="status-signed"><svg viewBox="0 0 24 24"
+                        style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg> <span data-i18n="status_signed_word">Signed</span></span></td>
+                  <td><button class="dl-btn"><span data-i18n="download_btn">Download</span></button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-packing" style="color:var(--grey);"><svg viewBox="0 0 24 24">
+                          <path d="m21 8-9-5-9 5 9 5 9-5Z" />
+                          <path d="M3 8v8l9 5 9-5V8M12 13v8" />
+                        </svg></div>
+                      <div><b><span data-i18n="packing_list">Packing list</span></b><span>Uploaded by customer · PDF ·
+                          88 KB</span></div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48213</span></td>
+                  <td class="text-mute">Brøndby → Hamburg</td>
+                  <td class="text-mute">18 Aug 2026</td>
+                  <td><span class="status-signed"><svg viewBox="0 0 24 24"
+                        style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg> <span data-i18n="status_avail_word">Available</span></span></td>
+                  <td><button class="dl-btn"><span data-i18n="download_btn">Download</span></button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-cmr" style="color:var(--blue);"><svg viewBox="0 0 24 24">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                          <path d="M14 2v6h6M9 13h6M9 17h6" />
+                        </svg></div>
+                      <div><b><span data-i18n="cmr_waybill">CMR waybill</span></b><span>Awaiting signature</span></div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48197</span></td>
+                  <td class="text-mute">Aarhus → Warsaw</td>
+                  <td class="text-mute">—</td>
+                  <td><span class="status-pending"><span data-i18n="status_pending_word">Pending</span></span></td>
+                  <td><button class="dl-btn pending">—</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-invoice" style="color:var(--green);"><svg viewBox="0 0 24 24">
+                          <rect x="2" y="5" width="20" height="14" rx="2" />
+                          <path d="M2 10h20M6 15h4" />
+                        </svg></div>
+                      <div><b><span data-i18n="filter_invoice">Invoice</span></b><span>Issued after delivery</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48213</span></td>
+                  <td class="text-mute">Brøndby → Hamburg</td>
+                  <td class="text-mute">—</td>
+                  <td><span class="status-pending"><span data-i18n="not_yet_issued">Not yet issued</span></span></td>
+                  <td><button class="dl-btn pending">—</button></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="doc-table-name">
+                      <div class="doc-type-ic dt-cmr" style="color:var(--blue);"><svg viewBox="0 0 24 24">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                          <path d="M14 2v6h6M9 13h6M9 17h6" />
+                        </svg></div>
+                      <div><b><span data-i18n="cmr_waybill">CMR waybill</span></b><span>Signed · PDF · 198 KB</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="ref">JT-48090</span></td>
+                  <td class="text-mute">Copenhagen → Prague</td>
+                  <td class="text-mute">29 Jul 2026</td>
+                  <td><span class="status-signed"><svg viewBox="0 0 24 24"
+                        style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg> <span data-i18n="status_signed_word">Signed</span></span></td>
+                  <td><button class="dl-btn"><span data-i18n="download_btn">Download</span></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="panel-foot">
+              <span><span data-i18n="showing_7_52">Showing 7 of 52 documents</span></span>
+              <div class="page-btns"><button class="active">1</button><button>2</button><button>›</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INVOICES VIEW -->
+        <div class="view" id="view-invoices">
+          <div class="page-head">
+            <div>
+              <h1>Invoices</h1>
+              <p>View outstanding balances and submit proof of payment.</p>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--amber-bg); color:var(--amber);"><svg viewBox="0 0 24 24">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg></div>
+              <div class="kpi-label">Total Outstanding</div>
+              <div class="kpi-value num">DKK 28,400</div>
+              <div class="kpi-delta flat">2 invoices pending</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--red-bg); color:var(--red);"><svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg></div>
+              <div class="kpi-label">Overdue Balance</div>
+              <div class="kpi-value num">DKK 0</div>
+              <div class="kpi-delta flat">All payments on time</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--green-bg); color:var(--green);"><svg viewBox="0 0 24 24">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg></div>
+              <div class="kpi-label">Paid This Month</div>
+              <div class="kpi-value num">DKK 9,500</div>
+              <div class="kpi-delta up">&#8593; 1 invoice settled</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--blue-bg); color:var(--blue);"><svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <path d="M3 10h18M8 3v4M16 3v4" />
+                </svg></div>
+              <div class="kpi-label">Next Due</div>
+              <div class="kpi-value num" style="font-size:18px;">24 Aug 2026</div>
+              <div class="kpi-delta flat">INV-1014</div>
+            </div>
+          </div>
+
+          <div class="filter-chips" style="margin-bottom:16px;">
+            <div class="chip active">All</div>
+            <div class="chip">Unpaid</div>
+            <div class="chip">Paid</div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Invoice History</h2>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Invoice #</th>
+                  <th>Date</th>
+                  <th>Due Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="ref">INV-1029</span></td>
+                  <td class="text-mute">18 Aug 2026</td>
+                  <td class="text-mute">01 Sep 2026</td>
+                  <td class="num">DKK 15,200</td>
+                  <td><span class="status-badge st-booked"><span class="sdot"></span>Unpaid</span></td>
+                  <td><button class="btn-new" style="padding:6px 12px;font-size:12px;"
+                      onclick="openPaymentModal('INV-1029','DKK 15,200')">Submit Payment</button></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">INV-1014</span></td>
+                  <td class="text-mute">10 Aug 2026</td>
+                  <td class="text-mute">24 Aug 2026</td>
+                  <td class="num">DKK 13,200</td>
+                  <td><span class="status-badge st-booked"><span class="sdot"></span>Unpaid</span></td>
+                  <td><button class="btn-new" style="padding:6px 12px;font-size:12px;"
+                      onclick="openPaymentModal('INV-1014','DKK 13,200')">Submit Payment</button></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">INV-0988</span></td>
+                  <td class="text-mute">01 Aug 2026</td>
+                  <td class="text-mute">15 Aug 2026</td>
+                  <td class="num">DKK 9,500</td>
+                  <td><span class="status-badge st-delivered"><span class="sdot"></span>Paid</span></td>
+                  <td><a href="#" class="link" style="font-size:13px;font-weight:600;">Download PDF</a></td>
+                </tr>
+                <tr>
+                  <td><span class="ref">INV-0965</span></td>
+                  <td class="text-mute">15 Jul 2026</td>
+                  <td class="text-mute">29 Jul 2026</td>
+                  <td class="num">DKK 7,800</td>
+                  <td><span class="status-badge st-delivered"><span class="sdot"></span>Paid</span></td>
+                  <td><a href="#" class="link" style="font-size:13px;font-weight:600;">Download PDF</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </div><!-- /main -->
+  </div><!-- /app-screen -->
+
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div>
+          <div class="ref-big">JT-48213</div>
+          <h2>Brøndby → Hamburg</h2>
+        </div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24"
+            style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg></button>
+      </div>
+      <div class="modal-tabs">
+        <div class="mtab active" data-tab="overview"><span data-i18n="tab_overview">Overview</span></div>
+        <div class="mtab" data-tab="tracking"><span data-i18n="tab_tracking">Tracking</span></div>
+        <div class="mtab" data-tab="documents"><span data-i18n="nav_documents">Documents</span></div>
+      </div>
+
+      <div class="mtab-content active" id="mtab-overview">
+        <div class="info-grid">
+          <div class="info-item"><span><span data-i18n="th_service">Service</span></span><b>Full load (FTL)</b></div>
+          <div class="info-item"><span><span data-i18n="th_weight">Weight</span></span><b>4,200 kg</b></div>
+          <div class="info-item"><span><span data-i18n="lbl_pickup_date">Pickup date</span></span><b>19 Aug 2026,
+              08:00</b></div>
+          <div class="info-item"><span>ETA</span><b>20 Aug 2026, 16:30</b></div>
+          <div class="info-item"><span><span data-i18n="lbl_truck_trailer">Truck / trailer</span></span><b>DK-AB 12
+              345</b></div>
+          <div class="info-item"><span><span data-i18n="lbl_driver_contact">Driver contact</span></span><b>+45 20 12 34
+              56</b></div>
+          <div class="info-item"><span><span data-i18n="lbl_po_ref">PO reference</span></span><b>NT-2026-0088</b></div>
+          <div class="info-item"><span><span data-i18n="th_status">Status</span></span><b><span
+                class="status-badge st-transit"><span class="sdot"></span><span data-i18n="status_transit">In
+                  transit</span></span></b></div>
+        </div>
+      </div>
+
+      <div class="mtab-content" id="mtab-tracking">
+        <div class="route-map-card">
+          <div class="route-map-top">
+            <div class="live-pill"><span class="pulse"></span> <span data-i18n="live_gps">LIVE GPS</span></div>
+            <span style="font-size:11.5px; color:var(--text-mute);"><span data-i18n="updated_2min">Updated 2 min
+                ago</span></span>
+          </div>
+          <div class="route-track">
+            <div class="fill"></div>
+            <div class="truck-pos"><svg viewBox="0 0 24 24"
+                style="width:100%;height:100%;fill:none;stroke:var(--navy);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;">
+                <path d="M1 5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11H2a1 1 0 0 1-1-1V5Z" />
+                <path d="M14 9h4l3 3v4h-7V9Z" />
+                <circle cx="6" cy="18" r="2" />
+                <circle cx="17.5" cy="18" r="2" />
+              </svg></div>
+          </div>
+          <div class="route-stops">
+            <div class="route-stop"><b>Brøndby, DK</b><span>Picked up 08:04</span></div>
+            <div class="route-stop"><b>Flensburg, DE</b><span><span data-i18n="current_position">Current
+                  position</span></span></div>
+            <div class="route-stop"><b>Hamburg, DE</b><span>ETA 16:30</span></div>
+          </div>
+          <div class="route-meta">
+            <div><span><span data-i18n="distance_covered">Distance covered</span></span><b>210 km</b></div>
+            <div><span><span data-i18n="remaining">Remaining</span></span><b>245 km</b></div>
+            <div><span><span data-i18n="avg_speed">Avg. speed</span></span><b>78 km/h</b></div>
+            <div><span><span data-i18n="lbl_driver">Driver</span></span><b>+45 20 12 34 56</b></div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="tl-step done"><b><span data-i18n="booking_confirmed">Booking confirmed</span></b><span>18 Aug,
+              10:12 — Copenhagen office</span></div>
+          <div class="tl-step done"><b><span data-i18n="step_picked_up">Picked up</span></b><span>19 Aug, 08:04 —
+              Brøndby warehouse</span></div>
+          <div class="tl-step now"><b><span data-i18n="status_transit">In transit</span></b><span>Currently near
+              Flensburg, DE · 245 km to go</span></div>
+          <div class="tl-step"><b><span data-i18n="customs_applicable">Customs (if applicable)</span></b><span><span
+                data-i18n="not_required_eu">Not required — EU internal</span></span></div>
+          <div class="tl-step"><b><span data-i18n="status_delivered">Delivered</span></b><span>Expected 20 Aug,
+              16:30</span></div>
+        </div>
+      </div>
+
+      <div class="mtab-content" id="mtab-documents">
+        <div class="doc-row">
+          <div class="doc-ic" style="background:var(--blue-bg); color:var(--blue);"><svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+              <path d="M14 2v6h6M9 13h6M9 17h6" />
+            </svg></div>
+          <div><b><span data-i18n="cmr_signed_full"><span data-i18n="cmr_waybill">CMR waybill</span>
+                (signed)</span></b><span>Signed by recipient · PDF · 210 KB</span></div>
+          <button class="doc-dl"><span data-i18n="download_btn">Download</span></button>
+        </div>
+        <div class="doc-row">
+          <div class="doc-ic" style="background:var(--grey-bg); color:var(--grey);"><svg viewBox="0 0 24 24">
+              <path d="m21 8-9-5-9 5 9 5 9-5Z" />
+              <path d="M3 8v8l9 5 9-5V8M12 13v8" />
+            </svg></div>
+          <div><b><span data-i18n="packing_list">Packing list</span></b><span>Uploaded by customer · PDF · 88 KB</span>
+          </div>
+          <button class="doc-dl"><span data-i18n="download_btn">Download</span></button>
+        </div>
+        <div class="doc-row">
+          <div class="doc-ic" style="background:var(--amber-bg); color:var(--amber);"><svg viewBox="0 0 24 24">
+              <path d="M9 11 12 14 22 4" />
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+            </svg></div>
+          <div><b><span data-i18n="pod_full"><span data-i18n="proof_delivery">Proof of delivery</span>
+                (POD)</span></b><span>Pending — available after delivery</span></div>
+          <button class="doc-dl" style="color:var(--text-faint); cursor:default;">—</button>
+        </div>
+        <div class="doc-row">
+          <div class="doc-ic" style="background:var(--green-bg); color:var(--green);"><svg viewBox="0 0 24 24">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20M6 15h4" />
+            </svg></div>
+          <div><b><span data-i18n="filter_invoice">Invoice</span></b><span><span data-i18n="not_yet_issued">Not yet
+                issued</span></span></div>
+          <button class="doc-dl" style="color:var(--text-faint); cursor:default;">—</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= QUOTE DETAIL POPUP (centered, separate from booking side-shutter) ================= -->
+  <div class="center-modal-overlay" id="quote-modal">
+    <div class="center-modal-box">
+      <div class="center-modal-head">
+        <div>
+          <div class="ref-big" id="qm-ref">Q-1042</div>
+          <h2 id="qm-route">Brøndby → Munich</h2>
+        </div>
+        <button class="modal-close" onclick="closeQuoteModal()"><svg viewBox="0 0 24 24"
+            style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg></button>
+      </div>
+      <div class="center-modal-body">
+        <div class="qm-status-row">
+          <span class="status-badge" id="qm-status-badge"><span class="sdot"></span><span id="qm-status-text">Pending
+              review</span></span>
+          <span class="qm-price" id="qm-price">DKK 2,850</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><span data-i18n="lbl_pickup_postcode">Pickup postcode / city</span><b
+              id="qm-pickup">2605 Brøndby, DK</b></div>
+          <div class="info-item"><span data-i18n="lbl_delivery_postcode">Delivery postcode / city</span><b
+              id="qm-delivery">Munich, DE</b></div>
+          <div class="info-item"><span data-i18n="lbl_pickup_date">Pickup date</span><b id="qm-date">26 Aug 2026</b>
+          </div>
+          <div class="info-item"><span data-i18n="th_weight">Weight</span><b id="qm-weight">1,200 kg</b></div>
+          <div class="info-item"><span data-i18n="th_service">Service</span><b id="qm-service">Full load</b></div>
+          <div class="info-item"><span data-i18n="th_valid_until">Valid until</span><b id="qm-valid">30 Aug 2026</b>
+          </div>
+          <div class="info-item" style="grid-column:1/-1;"><span data-i18n="lbl_goods_desc">Goods description</span><b
+              id="qm-goods">Pallets, general cargo</b></div>
+          <div class="info-item" style="grid-column:1/-1;"><span data-i18n="lbl_your_ref">Your reference / PO
+              number</span><b id="qm-poref">NT-2026-0091</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  </div>
+  </div>
+  </div>
+
+  <script>
+    function doLogin() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').classList.add('active');
+    }
+    function doLogout() {
+      document.getElementById('app-screen').classList.remove('active');
+      document.getElementById('login-screen').style.display = 'grid';
+      showView('dashboard');
+    }
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+    const translations = {
+      "book_btn": { "en": "Book", "da": "Book" },
+      "nav_quotes": { "en": "Quotes", "da": "Tilbud" },
+      "quotes_sub": { "en": "Price quotes requested for upcoming shipments", "da": "Prisoverslag anmodet til kommende forsendelser" },
+      "new_quote_btn": { "en": "New Quote", "da": "Nyt tilbud" },
+      "all_quotes": { "en": "All quotes", "da": "Alle tilbud" },
+      "quote_pending": { "en": "Pending review", "da": "Afventer godkendelse" },
+      "quote_accepted": { "en": "Accepted", "da": "Accepteret" },
+      "quote_expired": { "en": "Expired", "da": "Udløbet" },
+      "th_quote_ref": { "en": "Quote ref", "da": "Tilbudsnr." },
+      "th_valid_until": { "en": "Valid until", "da": "Gyldig til" },
+      "th_price": { "en": "Price", "da": "Pris" },
+      "view_btn": { "en": "View", "da": "Vis" },
+      "continue_btn": { "en": "Continue", "da": "Fortsæt" },
+      "showing_4_18": { "en": "Showing 4 of 18 quotes", "da": "Viser 4 af 18 tilbud" },
+      "nq_title": { "en": "Request a price quote", "da": "Anmod om et prisoverslag" },
+      "nq_sub": { "en": "Get an estimated price before you commit to a booking", "da": "Få en estimeret pris, før du bekræfter en booking" },
+      "lbl_pickup_postcode": { "en": "Pickup postcode / city", "da": "Postnr. / by for afhentning" },
+      "lbl_delivery_postcode": { "en": "Delivery postcode / city", "da": "Postnr. / by for levering" },
+      "svc_full_load_desc": { "en": "Dedicated truck, direct route", "da": "Dedikeret lastbil, direkte rute" },
+      "svc_part_load_desc": { "en": "Shared truck, cost-efficient", "da": "Delt lastbil, omkostningseffektivt" },
+      "svc_groupage_desc": { "en": "Consolidated cargo, regular departures", "da": "Samlet gods, faste afgange" },
+      "lbl_goods_desc": { "en": "Goods description", "da": "Godsbeskrivelse" },
+      "cancel_btn": { "en": "Cancel", "da": "Annuller" },
+      "request_quote_btn": { "en": "Request quote", "da": "Send anmodning" },
+      "lbl_password": { "en": "Password", "da": "Adgangskode" },
+      "sign_in_btn": { "en": "Sign in", "da": "Log ind" },
+      "search_placeholder": {
+        "en": "Track a shipment — enter reference number...",
+        "da": "Spor en forsendelse — indtast referencenummer..."
+      },
+      "login_quote": {
+        "en": "Book a truck, track it door to door, keep every document in one place.",
+        "da": "Book en lastbil, spor den dør til dør, og hav alle dokumenter samlet ét sted."
+      },
+      "login_quote_small": {
+        "en": "Road freight across 40+ European countries since 1982",
+        "da": "Vejtransport til over 40 europæiske lande siden 1982"
+      },
+      "stat_lanes": {
+        "en": "Export lanes",
+        "da": "Eksportruter"
+      },
+      "stat_terminals": {
+        "en": "DK terminals",
+        "da": "DK-terminaler"
+      },
+      "stat_tracking": {
+        "en": "Live tracking",
+        "da": "Live sporing"
+      },
+      "portal_subtitle": {
+        "en": "ROAD FREIGHT PORTAL",
+        "da": "VEJTRANSPORTPORTAL"
+      },
+      "welcome_back": {
+        "en": "Welcome back",
+        "da": "Velkommen tilbage"
+      },
+      "login_sub": {
+        "en": "Sign in to book truck transport and track your shipments.",
+        "da": "Log ind for at booke vejtransport og spore dine forsendelser."
+      },
+      "lbl_email": {
+        "en": "Email or customer ID",
+        "da": "E-mail eller kundenummer"
+      },
+      "remember_me": {
+        "en": "Remember me",
+        "da": "Husk mig"
+      },
+      "forgot_pw": {
+        "en": "Forgot password?",
+        "da": "Glemt adgangskode?"
+      },
+      "need_access": {
+        "en": "Need portal access?",
+        "da": "Mangler du adgang til portalen?"
+      },
+      "contact_am": {
+        "en": "Contact your account manager",
+        "da": "Kontakt din kundekonsulent"
+      },
+      "company_admin": {
+        "en": "Company Admin",
+        "da": "Firmaadministrator"
+      },
+      "log_out": {
+        "en": "Log out",
+        "da": "Log ud"
+      },
+      "new_booking_btn": {
+        "en": "New Booking",
+        "da": "Ny booking"
+      },
+      "active_live_status": {
+        "en": "Active shipments — live status",
+        "da": "Aktive forsendelser — live status"
+      },
+      "active_shipments": {
+        "en": "Active shipments",
+        "da": "Aktive forsendelser"
+      },
+      "upcoming_deliveries": {
+        "en": "Upcoming deliveries",
+        "da": "Kommende leveringer"
+      },
+      "delivered_month": {
+        "en": "Delivered this month",
+        "da": "Leveret denne måned"
+      },
+      "delta_vs_week": {
+        "en": "▲ 2 vs last week",
+        "da": "▲ 2 ift. sidste uge"
+      },
+      "next_7_days": {
+        "en": "Next 7 days",
+        "da": "Næste 7 dage"
+      },
+      "needs_attention": {
+        "en": "Needs attention",
+        "da": "Kræver opmærksomhed"
+      },
+      "ontime_rate": {
+        "en": "On-time rate 96%",
+        "da": "Rettidighed 96%"
+      },
+      "view_all": {
+        "en": "View all →",
+        "da": "Se alle →"
+      },
+      "showing_3_7": {
+        "en": "Showing 3 of 7 active shipments",
+        "da": "Viser 3 af 7 aktive forsendelser"
+      },
+      "showing_6_84": {
+        "en": "Showing 6 of 84 bookings",
+        "da": "Viser 6 af 84 bookinger"
+      },
+      "showing_7_52": {
+        "en": "Showing 7 of 52 documents",
+        "da": "Viser 7 af 52 dokumenter"
+      },
+      "bookings_sub": {
+        "en": "Full history of your road transport bookings and documents",
+        "da": "Fuld historik over dine vejtransportbookinger og dokumenter"
+      },
+      "all_bookings": {
+        "en": "All bookings",
+        "da": "Alle bookinger"
+      },
+      "booked_date": {
+        "en": "Booked date",
+        "da": "Booket dato"
+      },
+      "nb_title": {
+        "en": "New road transport booking",
+        "da": "Ny vejtransportbooking"
+      },
+      "nb_sub": {
+        "en": "Your company details are filled in automatically — just add pickup, delivery and cargo details",
+        "da": "Dine firmaoplysninger udfyldes automatisk — tilføj blot afhentning, levering og godsoplysninger"
+      },
+      "lbl_your_ref": {
+        "en": "Your reference / PO number",
+        "da": "Din reference / PO-nummer"
+      },
+      "lbl_cust_proj": {
+        "en": "Customer / project no.",
+        "da": "Kunde-/projektnr."
+      },
+      "lbl_order_date": {
+        "en": "Requested order date",
+        "da": "Ønsket ordredato"
+      },
+      "pickup_sender": {
+        "en": "Pickup (Sender)",
+        "da": "Afhentning (afsender)"
+      },
+      "use_company_addr": {
+        "en": "Use my company address",
+        "da": "Brug min firmaadresse"
+      },
+      "lbl_street": {
+        "en": "Street / No.",
+        "da": "Vej / Nr."
+      },
+      "lbl_postcode_city": {
+        "en": "Postcode / City",
+        "da": "Postnr. / By"
+      },
+      "lbl_phone": {
+        "en": "Contact phone",
+        "da": "Telefon"
+      },
+      "lbl_email2": {
+        "en": "Contact email",
+        "da": "E-mail"
+      },
+      "lbl_pickup_window": {
+        "en": "Pickup time window",
+        "da": "Afhentningstidsrum"
+      },
+      "lbl_pickup_notes": {
+        "en": "Pickup notes",
+        "da": "Noter til afhentning"
+      },
+      "lbl_pickup_date": {
+        "en": "Pickup date",
+        "da": "Afhentningsdato"
+      },
+      "delivery_receiver": {
+        "en": "Delivery (Receiver)",
+        "da": "Levering (modtager)"
+      },
+      "lbl_company_recipient": {
+        "en": "Company / recipient name",
+        "da": "Firma / modtagernavn"
+      },
+      "lbl_delivery_date": {
+        "en": "Requested delivery date",
+        "da": "Ønsket leveringsdato"
+      },
+      "lbl_delivery_window": {
+        "en": "Delivery time window",
+        "da": "Leveringstidsrum"
+      },
+      "lbl_delivery_notes": {
+        "en": "Delivery notes",
+        "da": "Noter til levering"
+      },
+      "lbl_vehicle_type": {
+        "en": "Vehicle type",
+        "da": "Køretøjstype"
+      },
+      "opt_curtain": {
+        "en": "Curtain-sider",
+        "da": "Gardintrailer"
+      },
+      "opt_refrigerated": {
+        "en": "Refrigerated",
+        "da": "Køletrailer"
+      },
+      "opt_flatbed": {
+        "en": "Flatbed",
+        "da": "Åben trailer"
+      },
+      "opt_taillift": {
+        "en": "Tail-lift",
+        "da": "Bagsmæk"
+      },
+      "lbl_goods_type": {
+        "en": "Goods type",
+        "da": "Godstype"
+      },
+      "opt_general_cargo": {
+        "en": "General cargo",
+        "da": "Stykgods"
+      },
+      "opt_pallets_nonstack": {
+        "en": "Pallets — non-stackable",
+        "da": "Paller — ikke-stabelbare"
+      },
+      "opt_machinery": {
+        "en": "Machinery",
+        "da": "Maskiner"
+      },
+      "opt_temp_controlled": {
+        "en": "Temperature-controlled",
+        "da": "Temperaturstyret"
+      },
+      "opt_hazardous": {
+        "en": "Hazardous (ADR)",
+        "da": "Farligt gods (ADR)"
+      },
+      "hazard_checkbox": {
+        "en": "This shipment contains hazardous goods (ADR)",
+        "da": "Denne forsendelse indeholder farligt gods (ADR)"
+      },
+      "pkg_dimensions": {
+        "en": "Packages & dimensions",
+        "da": "Kolli &amp; dimensioner"
+      },
+      "th_pkg_type": {
+        "en": "Package type",
+        "da": "Kollitype"
+      },
+      "th_weight_kg": {
+        "en": "Weight (kg)",
+        "da": "Vægt (kg)"
+      },
+      "th_dimensions": {
+        "en": "Dimensions (L×W×H cm)",
+        "da": "Mål (L×B×H cm)"
+      },
+      "opt_euro_pallet": {
+        "en": "Euro pallet",
+        "da": "Europalle"
+      },
+      "opt_industrial_pallet": {
+        "en": "Industrial pallet",
+        "da": "Industripalle"
+      },
+      "opt_crate": {
+        "en": "Crate",
+        "da": "Trækasse"
+      },
+      "opt_roll_cage": {
+        "en": "Roll cage",
+        "da": "Rullebur"
+      },
+      "add_pkg_line": {
+        "en": "+ Add package line",
+        "da": "+ Tilføj kollilinje"
+      },
+      "lbl_total_weight": {
+        "en": "Total weight (kg)",
+        "da": "Samlet vægt (kg)"
+      },
+      "lbl_total_pallets": {
+        "en": "Total pallet spaces",
+        "da": "Samlet antal palladepladser"
+      },
+      "lbl_additional_notes": {
+        "en": "Additional notes for Jumbo",
+        "da": "Yderligere noter til Jumbo"
+      },
+      "estimated_price": {
+        "en": "Estimated price",
+        "da": "Estimeret pris"
+      },
+      "excl_vat": {
+        "en": "excl. VAT",
+        "da": "ekskl. moms"
+      },
+      "final_price_note": {
+        "en": "Final price confirmed after booking review",
+        "da": "Endelig pris bekræftes efter gennemgang af booking"
+      },
+      "save_draft": {
+        "en": "Save as draft",
+        "da": "Gem som kladde"
+      },
+      "submit_booking": {
+        "en": "Submit booking",
+        "da": "Send booking"
+      },
+      "docs_sub": {
+        "en": "Every CMR, invoice and proof of delivery from your bookings, in one place",
+        "da": "Alle CMR-fragtbreve, fakturaer og leveringsbeviser fra dine bookinger, samlet ét sted"
+      },
+      "all_documents": {
+        "en": "All documents",
+        "da": "Alle dokumenter"
+      },
+      "packing_list": {
+        "en": "Packing list",
+        "da": "Pakkeliste"
+      },
+      "cmr_signed_full": {
+        "en": "CMR waybill (signed)",
+        "da": "CMR-fragtbrev (underskrevet)"
+      },
+      "cmr_waybill": {
+        "en": "CMR waybill",
+        "da": "CMR-fragtbrev"
+      },
+      "pod_full": {
+        "en": "Proof of delivery (POD)",
+        "da": "Leveringsbevis (POD)"
+      },
+      "proof_delivery": {
+        "en": "Proof of delivery",
+        "da": "Leveringsbevis"
+      },
+      "not_yet_issued": {
+        "en": "Not yet issued",
+        "da": "Endnu ikke udstedt"
+      },
+      "lbl_truck_trailer": {
+        "en": "Truck / trailer",
+        "da": "Lastbil / trailer"
+      },
+      "lbl_driver_contact": {
+        "en": "Driver contact",
+        "da": "Chaufførkontakt"
+      },
+      "lbl_po_ref": {
+        "en": "PO reference",
+        "da": "PO-reference"
+      },
+      "live_gps": {
+        "en": "LIVE GPS",
+        "da": "LIVE GPS"
+      },
+      "updated_2min": {
+        "en": "Updated 2 min ago",
+        "da": "Opdateret for 2 min. siden"
+      },
+      "current_position": {
+        "en": "Current position",
+        "da": "Nuværende position"
+      },
+      "distance_covered": {
+        "en": "Distance covered",
+        "da": "Kørt distance"
+      },
+      "avg_speed": {
+        "en": "Avg. speed",
+        "da": "Gnsn. hastighed"
+      },
+      "booking_confirmed": {
+        "en": "Booking confirmed",
+        "da": "Booking bekræftet"
+      },
+      "customs_applicable": {
+        "en": "Customs (if applicable)",
+        "da": "Told (hvis relevant)"
+      },
+      "not_required_eu": {
+        "en": "Not required — EU internal",
+        "da": "Ikke påkrævet — internt i EU"
+      },
+      "nav_dashboard": {
+        "en": "Dashboard",
+        "da": "Oversigt"
+      },
+      "nav_my_bookings": {
+        "en": "My Bookings",
+        "da": "Mine bookinger"
+      },
+      "breadcrumb_home": {
+        "en": "Home",
+        "da": "Hjem"
+      },
+      "th_reference": {
+        "en": "Reference",
+        "da": "Reference"
+      },
+      "th_route": {
+        "en": "Route",
+        "da": "Rute"
+      },
+      "th_progress": {
+        "en": "Progress",
+        "da": "Fremdrift"
+      },
+      "th_status": {
+        "en": "Status",
+        "da": "Status"
+      },
+      "th_service": {
+        "en": "Service",
+        "da": "Service"
+      },
+      "th_weight": {
+        "en": "Weight",
+        "da": "Vægt"
+      },
+      "svc_full_load": {
+        "en": "Full load",
+        "da": "Fuldlast"
+      },
+      "svc_groupage": {
+        "en": "Groupage",
+        "da": "Samlegods"
+      },
+      "svc_part_load": {
+        "en": "Part load",
+        "da": "Dellast"
+      },
+      "status_transit": {
+        "en": "In transit",
+        "da": "Undervejs"
+      },
+      "status_delivered": {
+        "en": "Delivered",
+        "da": "Leveret"
+      },
+      "status_delayed": {
+        "en": "Delayed",
+        "da": "Forsinket"
+      },
+      "status_booked": {
+        "en": "Booked",
+        "da": "Booket"
+      },
+      "status_draft": {
+        "en": "Draft",
+        "da": "Kladde"
+      },
+      "filter_all": {
+        "en": "All",
+        "da": "Alle"
+      },
+      "lbl_company": {
+        "en": "Company",
+        "da": "Firma"
+      },
+      "lbl_country": {
+        "en": "Country",
+        "da": "Land"
+      },
+      "opt_standard": {
+        "en": "Standard",
+        "da": "Standard"
+      },
+      "th_quantity": {
+        "en": "Quantity",
+        "da": "Antal"
+      },
+      "th_description": {
+        "en": "Description",
+        "da": "Beskrivelse"
+      },
+      "opt_box": {
+        "en": "Box",
+        "da": "Kasse"
+      },
+      "optional_tag": {
+        "en": "(optional)",
+        "da": "(valgfrit)"
+      },
+      "tab_overview": {
+        "en": "Overview",
+        "da": "Oversigt2"
+      },
+      "tab_tracking": {
+        "en": "Tracking",
+        "da": "Sporing"
+      },
+      "lbl_driver": {
+        "en": "Driver",
+        "da": "Chauffør"
+      },
+      "step_picked_up": {
+        "en": "Picked up",
+        "da": "Afhentet"
+      },
+      "filter_invoice": {
+        "en": "Invoice",
+        "da": "Faktura"
+      },
+      "th_document": {
+        "en": "Document",
+        "da": "Dokument"
+      },
+      "th_booking": {
+        "en": "Booking",
+        "da": "Booking"
+      },
+      "th_date": {
+        "en": "Date",
+        "da": "Dato"
+      },
+      "status_pending_word": {
+        "en": "Pending",
+        "da": "Afventer"
+      },
+      "nav_documents": {
+        "en": "Documents",
+        "da": "Dokumenter"
+      },
+      "download_btn": {
+        "en": "Download",
+        "da": "Download"
+      },
+      "remaining": {
+        "en": "Remaining",
+        "da": "Resterende"
+      },
+      "filter_cmr": {
+        "en": "CMR",
+        "da": "CMR"
+      },
+      "filter_pod": {
+        "en": "POD",
+        "da": "POD"
+      },
+      "status_signed_word": {
+        "en": "Signed",
+        "da": "Underskrevet"
+      },
+      "status_avail_word": {
+        "en": "Available",
+        "da": "Tilgængelig"
+      },
+      "status_issued_word": {
+        "en": "Issued",
+        "da": "Udstedt"
+      }
+    };
+
+    function applyLanguage(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const entry = translations[key];
+        if (entry && entry[lang]) el.textContent = entry[lang];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const entry = translations[key];
+        if (entry && entry[lang]) el.setAttribute('placeholder', entry[lang]);
+      });
+      document.documentElement.lang = lang;
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyLanguage(btn.dataset.lang);
+      });
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => showView(item.dataset.view));
+    });
+
+    function openPaymentModal(invNum, amt) {
+      document.getElementById('sp-inv-num').textContent = invNum;
+      document.getElementById('sp-inv-amt').textContent = amt;
+      document.getElementById('submit-payment-modal').classList.add('active');
+    }
+    function submitPaymentForm() {
+      closeModal('submit-payment-modal');
+      alert('Proof of payment submitted for verification.');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function showView(name) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.toggle('active', i.dataset.view === name));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById('view-' + name).classList.add('active');
+    }
+    function openBooking() { document.getElementById('booking-modal').classList.add('active'); }
+    function closeBooking() { document.getElementById('booking-modal').classList.remove('active'); }
+    function openQuoteModal(btn) {
+      const d = btn.dataset;
+      document.getElementById('qm-ref').textContent = d.qref;
+      document.getElementById('qm-route').textContent = d.pickup.split(',')[0] + ' → ' + d.delivery;
+      document.getElementById('qm-pickup').textContent = d.pickup;
+      document.getElementById('qm-delivery').textContent = d.delivery;
+      document.getElementById('qm-date').textContent = d.date;
+      document.getElementById('qm-weight').textContent = d.weight;
+      document.getElementById('qm-service').textContent = d.service;
+      document.getElementById('qm-valid').textContent = d.valid;
+      document.getElementById('qm-goods').textContent = d.goods;
+      document.getElementById('qm-poref').textContent = d.poref;
+      document.getElementById('qm-price').textContent = d.price;
+      document.getElementById('qm-status-text').textContent = d.status;
+      const badge = document.getElementById('qm-status-badge');
+      badge.className = 'status-badge ' + d.statusclass;
+      document.getElementById('quote-modal').classList.add('active');
+    }
+    function closeQuoteModal() { document.getElementById('quote-modal').classList.remove('active'); }
+    document.querySelectorAll('.mtab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.mtab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.mtab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('mtab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+    function toggleSender() {
+      const on = document.getElementById('senderAuto').checked;
+      document.querySelectorAll('#senderFields .locked input').forEach(inp => {
+        inp.disabled = on;
+      });
+      document.querySelectorAll('#senderFields .locked').forEach(f => f.classList.toggle('locked', on));
+    }
+    function addPkgRow() {
+      const tbody = document.getElementById('pkgRows');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+    <td><input type="number" value="1" class="cell-input"></td>
+    <td><select class="cell-input"><option><span data-i18n="opt_euro_pallet">Euro pallet</span></option><option><span data-i18n="opt_industrial_pallet">Industrial pallet</span></option><option><span data-i18n="opt_box">Box</span></option><option><span data-i18n="opt_crate">Crate</span></option><option><span data-i18n="opt_roll_cage">Roll cage</span></option></select></td>
+    <td><input type="text" placeholder="Description" class="cell-input"></td>
+    <td><input type="number" placeholder="Weight" class="cell-input"></td>
+    <td><input type="text" placeholder="L×W×H" class="cell-input"></td>
+    <td><button class="row-remove" onclick="this.closest('tr').remove()">✕</button></td>`;
+      tbody.appendChild(tr);
+    }
+  </script>
+  <script src="assets/pagination.js"></script>
+
+  <div class="modal-overlay" id="submit-payment-modal">
+    <div class="modal-box" style="width:480px; max-width:95vw;">
+      <div class="modal-head">
+        <div>
+          <h2>Submit Payment</h2>
+          <p>Proof of payment for invoice <span id="sp-inv-num" class="ref"></span></p>
+        </div>
+        <button class="modal-close"
+          onclick="document.getElementById('submit-payment-modal').classList.remove('active')">&#x2715;</button>
+      </div>
+      <div class="modal-body">
+        <div
+          style="background:var(--bg);border:1px solid var(--border);padding:16px;border-radius:10px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div
+              style="font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">
+              Amount Due</div>
+            <div id="sp-inv-amt" style="font-size:20px;font-weight:800;color:var(--navy);margin-top:4px;">DKK 0</div>
+          </div>
+          <svg viewBox="0 0 24 24"
+            style="width:32px;height:32px;color:var(--amber);stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
